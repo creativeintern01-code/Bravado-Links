@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BRAVADO — Links</title>
+
+  <style>
+    /* ---------- Colors & root ---------- */
+    :root{
+      --black:#000000;
+      --white:#ffffff;
+      --muted:#9aa3ab;
+      --pill:#e9ebec;
+      --text:#0b0b0b;
+      --shadow-strong: 0 18px 40px rgba(2,6,23,0.10);
+      --shadow-soft: 0 8px 18px rgba(2,6,23,0.06);
+      --radius: 28px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:#fafafa;color:var(--text);-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+
+    /* ---------- Top black banner ---------- */
+    .top-banner{
+      background:var(--black);
+      padding:18px 12px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .top-banner .banner-inner{max-width:980px;width:100%;display:flex;justify-content:center}
+    .top-banner img{max-height:72px;object-fit:contain;display:block}
+
+    /* ---------- Main layout (single column only) ---------- */
+    .container{
+      max-width:980px;
+      margin: -40px auto 24px; /* pulled up over banner like sample */
+      padding: 0 16px;
+      display:block;
+    }
+
+    /* ---------- Card ---------- */
+    .card{
+      background: var(--white);
+      border-radius:20px;
+      padding:28px 18px 32px;
+      box-shadow: var(--shadow-strong);
+      position:relative;
+      overflow:visible;
+    }
+
+    /* circular cutout for small logo */
+    .logo-cutout{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      top:-54px;
+      width:112px;height:112px;
+      background:var(--white);
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 14px 34px rgba(2,6,23,0.12);
+      border: 5px solid var(--white);
+      overflow:hidden;
+    }
+    .logo-cutout img{width:86px;height:86px;object-fit:contain;display:block}
+
+    .card-body{margin-top:64px;text-align:center}
+    .brand-name{margin:0;font-size:22px;letter-spacing:1px;font-weight:800}
+    .tagline{margin:6px 0 18px;color:var(--muted);font-size:13px}
+
+    .section-title{
+      text-align:left;
+      margin:18px 6px 8px;
+      font-size:14px;
+      color:#111827;
+      font-weight:700;
+    }
+
+    /* links list: pill style with icons, slightly elevated */
+    .links{display:flex;flex-direction:column;gap:12px;padding:0 6px}
+    .link-pill{
+      display:flex;align-items:center;gap:14px;
+      padding:12px 16px;border-radius:28px;
+      background:var(--pill);
+      color:var(--text);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0,0,0,0.04);
+      transition:transform .14s ease, box-shadow .14s ease;
+    }
+    .link-pill:hover{transform:translateY(-6px); box-shadow: 0 22px 46px rgba(2,6,23,0.10)}
+    .link-icon{
+      width:48px;height:48px;border-radius:12px;flex:0 0 48px;
+      display:flex;align-items:center;justify-content:center;background:var(--white);
+      box-shadow: 0 6px 18px rgba(2,6,23,0.06); overflow:hidden;
+    }
+    .link-icon img{width:28px;height:28px;object-fit:contain;display:block}
+    .link-text{display:flex;flex-direction:column;text-align:left}
+    .link-title{font-weight:700;font-size:15px}
+    .link-sub{font-size:13px;color:var(--muted);margin-top:4px}
+
+    .page-footer{text-align:center;color:var(--muted);font-size:12px;margin:18px 0 36px}
+
+    /* reduce motion */
+    @media (prefers-reduced-motion:reduce){
+      .link-pill, .logo-cutout{transition:none}
+    }
+
+    /* slightly larger on wide screens */
+    @media (min-width:880px){
+      .card{padding:34px}
+      .logo-cutout{top:-64px;width:124px;height:124px}
+      .logo-cutout img{width:94px;height:94px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top black banner with BRAVADO logo (replace asset path below) -->
+  <header class="top-banner">
+    <div class="banner-inner">
+      <!-- Replace the src file inside assets folder or change path in script -->
+      <img id="bannerLogo" src="assets/bravado-banner.png" alt="BRAVADO banner logo (replace in assets)" />
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <!-- Main card -->
+    <section class="card" aria-labelledby="brand-heading">
+      <div class="logo-cutout" aria-hidden="true">
+        <img id="smallLogo" src="assets/bravado-small.png" alt="BRAVADO small logo (replace in assets)">
+      </div>
+
+      <div class="card-body">
+        <h1 id="brand-heading" class="brand-name">BRAVADO</h1>
+        <p id="tagline" class="tagline">Impress Yourself</p>
+
+        <h3 class="section-title">Our Website</h3>
+        <div id="linksList" class="links">
+          <!-- Website pill inserted by JS -->
+        </div>
+
+        <h3 class="section-title">Social Handles</h3>
+        <div id="socialList" class="links">
+          <!-- Social pills inserted by JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">Built for BRAVADO</footer>
+
+  <!-- Single-file JS: edit the `profile` object below -->
+  <script>
+    /* =======================
+       EDIT ONLY THESE VALUES
+       =======================
+       - Replace bannerLogo & smallLogo paths if you place assets elsewhere.
+       - Replace the link values with your real URLs.
+       - If your icon filenames differ, edit profile.iconFiles values.
+    */
+    const profile = {
+      brandName: "BRAVADO",
+      tagline: "Impress Yourself",
+      bannerLogo: "assets/bravado-banner.png", // update path if needed
+      smallLogo: "assets/bravado-small.png",   // update path if needed
+
+      // icon file names inside assets/ (change if your files have different names)
+      iconFiles: {
+        website: "assets/website-color.png",
+        instagram: "assets/instagram-Color.png",
+        facebook: "assets/facebook-color.png",
+        youtube: "assets/youtube-color.png",
+        linkedin: "assets/linkedin-color.png",
+        twitter: "assets/twitter-color.png",
+        catalogue: "assets/catalouge-color.png"
+      },
+
+      // Put your real URLs here (leave "" if none)
+      links: {
+        website: "https://bravado.co.in/",   // e.g. "https://www.bravado.co.in"
+        instagram: "https://www.instagram.com/bravado.co.in?igsh=ZzB3N2IyM2k2dnd1", // e.g. "https://instagram.com/bravado"
+        facebook: "https://www.facebook.com/share/16MLsz6mgr/?mibextid=wwXIfr",
+        youtube: "https://www.youtube.com/@bravado3043",
+        linkedin: "https://www.linkedin.com/showcase/bravado-impressyourself/",
+        twitter: "https://x.com/Bravado00162618",
+        catalogue: "https://drive.google.com/file/d/11Ec2TRdPBDPe4aF2D8A4cmjuKbX8_y5c/view?usp=sharing"  // PDF/Drive link
+      }
+    };
+
+    /* ========== DOM refs ========== */
+    const bannerImg = document.getElementById('bannerLogo');
+    const smallLogoImg = document.getElementById('smallLogo');
+    const brandHeading = document.getElementById('brand-heading');
+    const taglineEl = document.getElementById('tagline');
+    const linksList = document.getElementById('linksList');
+    const socialList = document.getElementById('socialList');
+
+    /* ========== Apply assets/text ========== */
+    bannerImg.src = profile.bannerLogo || bannerImg.src;
+    smallLogoImg.src = profile.smallLogo || smallLogoImg.src;
+    brandHeading.textContent = profile.brandName || 'BRAVADO';
+    taglineEl.textContent = profile.tagline || '';
+
+    /* ========== Helper: create pill element (uses <img> for icon) ========== */
+    function createPill({title, subtitle, url, iconSrc}) {
+      const wrapper = url ? document.createElement('a') : document.createElement('div');
+      wrapper.className = 'link-pill';
+      if(url){
+        wrapper.href = url;
+        wrapper.target = '_blank';
+        wrapper.rel = 'noopener noreferrer';
+      } else {
+        wrapper.setAttribute('aria-disabled', 'true');
+        wrapper.style.opacity = '0.6';
+        wrapper.title = 'Edit the URL in the script';
+      }
+
+      const iconWrap = document.createElement('div');
+      iconWrap.className = 'link-icon';
+      if(iconSrc){
+        const img = document.createElement('img');
+        img.src = iconSrc;
+        img.alt = title + ' icon';
+        iconWrap.appendChild(img);
+      }
+
+      const textWrap = document.createElement('div');
+      textWrap.className = 'link-text';
+
+      const t = document.createElement('div');
+      t.className = 'link-title';
+      t.textContent = title;
+
+      const s = document.createElement('div');
+      s.className = 'link-sub';
+      s.textContent = subtitle || (url ? url.replace(/^https?:\/\//,'').replace(/\/.*$/,'') : 'No URL set');
+
+      textWrap.appendChild(t);
+      textWrap.appendChild(s);
+
+      wrapper.appendChild(iconWrap);
+      wrapper.appendChild(textWrap);
+      return wrapper;
+    }
+
+    /* ========== Populate Website pill ========== */
+    const websitePill = createPill({
+      title: profile.links.website ? profile.links.website.replace(/^https?:\/\//,'') : 'www.bravado.co.in',
+      subtitle: profile.links.website ? profile.links.website.replace(/^https?:\/\//,'') : 'No URL set — edit in script',
+      url: profile.links.website || '',
+      iconSrc: profile.iconFiles.website || ''
+    });
+    linksList.appendChild(websitePill);
+
+    /* ========== Populate Social pills (ordered like your image) ========== */
+    const socialOrder = [
+      {key:'instagram', title:'Instagram', iconKey:'instagram'},
+      {key:'facebook',  title:'Facebook',  iconKey:'facebook'},
+      {key:'youtube',   title:'Youtube',   iconKey:'youtube'},
+      {key:'linkedin',  title:'LinkedIn',  iconKey:'linkedin'},
+      {key:'twitter',   title:'Twitter',   iconKey:'twitter'},
+      {key:'catalogue', title:'Catalogue', iconKey:'catalogue'}
+    ];
+
+    socialOrder.forEach(s => {
+      const url = profile.links[s.key] || '';
+      const pill = createPill({
+        title: s.title,
+        subtitle: url ? url.replace(/^https?:\/\//,'').replace(/\/.*$/,'') : 'No URL set — edit in script',
+        url,
+        iconSrc: profile.iconFiles[s.iconKey] || ''
+      });
+      socialList.appendChild(pill);
+    });
+
+    /* ========== Notes for you ==========
+       - Place your colour PNG icons in assets/ with the names in profile.iconFiles
+       - Edit profile.links.* to add your real URLs
+       - If icon filenames differ, update profile.iconFiles accordingly
+       - For best preview use Live Server in VS Code (avoids file:// behavior)
+    */
+  </script>
+</body>
+</html>
